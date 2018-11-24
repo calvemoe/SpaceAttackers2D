@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour {
 
     public GameObject explosionPrefab;
 
+    //const
     private static float explosionDestroyingTime = 1.5f;
 
 	// Use this for initialization

@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour {
     private int enemyCount;
     private bool loosing = false;
 
+    //const
     private static float explosionDestroyingTime = 1.5f;
     private static float playerDestroyingTime = 1f;
 

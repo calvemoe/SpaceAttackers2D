@@ -14,8 +14,13 @@ public class Player : MonoBehaviour {
 
     private float cooldownTimer;
 
-	// Use this for initialization
-	void Start () {
+    //const
+    private static float explosionDestroyingTime = 1.5f;
+    private static float missileDestroyingTime = 2f;
+
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -45,7 +50,7 @@ public class Player : MonoBehaviour {
 
             missileInstance.transform.position = transform.position;
             missileInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(0, firingSpeed);
-            Destroy(missileInstance, 2f);
+            Destroy(missileInstance, missileDestroyingTime);
         }
     }
 
@@ -57,7 +62,7 @@ public class Player : MonoBehaviour {
             GameObject explosionInstance = Instantiate(explosionPrefab);
             explosionInstance.transform.SetParent(transform.parent);
             explosionInstance.transform.position = transform.position;
-            Destroy(explosionInstance, 1.5f);
+            Destroy(explosionInstance, explosionDestroyingTime);
 
             //destroying enemy and missle
             Destroy(gameObject);
