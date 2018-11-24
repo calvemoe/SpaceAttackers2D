@@ -23,8 +23,11 @@ public class GameController : MonoBehaviour {
     private int enemyCount;
     private bool loosing = false;
 
-	// Use this for initialization
-	void Start () {
+    private static float explosionDestroyingTime = 1.5f;
+    private static float playerDestroyingTime = 1f;
+
+    // Use this for initialization
+    void Start () {
         enemyShootingTimer = shootingInterval;
         enemyMovingInterval = enemyMaximumMovemingInterval;
         enemyCount = GetComponentsInChildren<Enemy>().Length;
@@ -77,11 +80,7 @@ public class GameController : MonoBehaviour {
 
                 if (rightMostPosition > enemyHorizontalLimit)
                 {
-                    enemyMovingDirection *= -1;
-                    enemyContainer.transform.position = new Vector2(
-                        enemyContainer.transform.position.x, 
-                        enemyContainer.transform.position.y - enemyMovingDistance
-                    );
+                    EnemyGroupSwitchDirection();
                 }
             }
             else if (enemyMovingDirection < 0)
@@ -101,11 +100,7 @@ public class GameController : MonoBehaviour {
 
                 if (leftMostPosition < -enemyHorizontalLimit)
                 {
-                    enemyMovingDirection *= -1;
-                    enemyContainer.transform.position = new Vector2(
-                        enemyContainer.transform.position.x,
-                        enemyContainer.transform.position.y - enemyMovingDistance
-                    );
+                    EnemyGroupSwitchDirection();
                 }
             }
         }
@@ -121,10 +116,19 @@ public class GameController : MonoBehaviour {
             GameObject explosionInstance = Instantiate(explosionPrefab);
             explosionInstance.transform.SetParent(player.transform);
             explosionInstance.transform.position = player.transform.position;
-            Destroy(explosionInstance, 1.5f);
+            Destroy(explosionInstance, explosionDestroyingTime);
 
-            Destroy(player.gameObject, 1f);
+            Destroy(player.gameObject, playerDestroyingTime);
             loosing = false;
         }
 	}
+
+    void EnemyGroupSwitchDirection()
+    {
+            enemyMovingDirection *= -1;
+            enemyContainer.transform.position = new Vector2(
+                enemyContainer.transform.position.x,
+                enemyContainer.transform.position.y - enemyMovingDistance
+            );
+    }
 }

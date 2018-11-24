@@ -6,6 +6,8 @@ public class Enemy : MonoBehaviour {
 
     public GameObject explosionPrefab;
 
+    private static float explosionDestroyingTime = 1.5f;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -24,7 +26,7 @@ public class Enemy : MonoBehaviour {
             GameObject explosionInstance = Instantiate(explosionPrefab);
             explosionInstance.transform.SetParent(transform.parent.parent);
             explosionInstance.transform.position = transform.position;
-            Destroy(explosionInstance, 1.5f);
+            Destroy(explosionInstance, explosionDestroyingTime);
 
             //destroying enemy and missle
             Destroy(gameObject);
