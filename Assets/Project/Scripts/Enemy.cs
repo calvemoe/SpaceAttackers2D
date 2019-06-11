@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
-    public GameObject explosionPrefab;
+    [SerializeField]
+    private GameObject explosionPrefab;
 
     //const
     private static float explosionDestroyingTime = 1.5f;
@@ -13,16 +14,9 @@ public class Enemy : MonoBehaviour {
 	void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-    void OnTriggerEnter2D(Collider2D otherCollider)
-    {
-        if (otherCollider.tag == "PlayerMissile")
-        {
+    void OnTriggerEnter2D(Collider2D otherCollider) {
+        if (otherCollider.CompareTag("PlayerMissile")) {
             //Explosion
             GameObject explosionInstance = Instantiate(explosionPrefab);
             explosionInstance.transform.SetParent(transform.parent.parent);

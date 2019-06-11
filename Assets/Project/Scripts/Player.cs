@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    public float speed = 1.5f;                  // moving speed
-    public float firingSpeed = 4f;              // player missile speed
-    public float firingCooldownDuration = 1f;   // cooldown beetwen shots
-    public float horizontalLimit = 2.7f;        // horizontal boundary
+    [SerializeField]
+    private float speed = 1.5f;                  // moving speed
+    [SerializeField]
+    private float firingSpeed = 4f;              // player missile speed
+    [SerializeField]
+    private float firingCooldownDuration = 1f;   // cooldown beetwen shots
+    [SerializeField]
+    private float horizontalLimit = 2.7f;        // horizontal boundary
 
-    public GameObject missilePrefab;
-    public GameObject explosionPrefab;
+    [SerializeField]
+    private GameObject missilePrefab;
+    [SerializeField]
+    private GameObject explosionPrefab;
 
     private float cooldownTimer;
 
@@ -18,32 +24,29 @@ public class Player : MonoBehaviour {
     private static float explosionDestroyingTime = 1.5f;
     private static float missileDestroyingTime = 2f;
 
+    private Rigidbody2D rb;
 
-    // Use this for initialization
-    void Start () {
-		
-	}
+    void Awake() {
+        rb = GetComponent<Rigidbody2D>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        GetComponent<Rigidbody2D>().velocity = new Vector2(Input.GetAxis("Horizontal") * speed, 0);
+        rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, 0);
 
         //keep player within bounce
-        if (transform.position.x > horizontalLimit)
-        {
+        if (transform.position.x > horizontalLimit) {
             transform.position = new Vector3(horizontalLimit, transform.position.y);
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            rb.velocity = Vector2.zero;
         }
-        else if (transform.position.x < -horizontalLimit)
-        {
+        else if (transform.position.x < -horizontalLimit) {
             transform.position = new Vector3(-horizontalLimit, transform.position.y);
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            rb.velocity = Vector2.zero;
         }
 
         //fire missle
         cooldownTimer -= Time.deltaTime;
-        if (cooldownTimer <= 0 && Input.GetAxis("Fire1") == 1f)
-        {
+        if (cooldownTimer <= 0 && Input.GetAxis("Fire1") == 1f) {
             cooldownTimer = firingCooldownDuration;
             GameObject missileInstance = Instantiate(missilePrefab);
             missileInstance.transform.SetParent(transform.parent);
@@ -54,10 +57,8 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D otherCollider)
-    {
-        if (otherCollider.tag == "EnemyMissile" || otherCollider.tag == "Enemy")
-        {
+    void OnTriggerEnter2D(Collider2D otherCollider) {
+        if (otherCollider.CompareTag("EnemyMissile") || otherCollider.CompareTag("Enemy")) {
             //Explosion
             GameObject explosionInstance = Instantiate(explosionPrefab);
             explosionInstance.transform.SetParent(transform.parent);
